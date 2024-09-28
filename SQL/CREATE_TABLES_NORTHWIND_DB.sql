@@ -6,6 +6,10 @@
 --     Copy and paste the SQL commands below into the Query Tool window.
 --     Execute the SQL commands to create the Northwind database.
 
+--     ÜBERPRÜFUNG 
+SELECT table_name FROM information_schema.tables WHERE table_schema = 'public';
+
+-- CODE BEGINNT
 CREATE TABLE Categories(      
     CategoryID SERIAL PRIMARY KEY,
     CategoryName VARCHAR(25),
