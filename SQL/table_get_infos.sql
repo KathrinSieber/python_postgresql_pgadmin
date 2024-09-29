@@ -13,19 +13,23 @@ SELECT * FROM Customers WHERE Country = 'Spain';
 -- 2. What are the distinct cities of customers from Germany with a city containing the letter 'B'?
 SELECT city FROM Customers WHERE Country = 'Germany' AND City ILIKE '%B%';
 
-3. What are the number of orders placed by each customer? Sort the result by the number of orders in descending order.
+-- 3. What are the number of orders placed by each customer? Sort the result by the number of orders in descending order.
+SELECT CustomerID, COUNT(OrderID) AS OrderCount FROM Orders GROUP BY CustomerID ORDER BY OrderCount DESC;
 
+-- 4. What are the customers who have placed more than 3 orders?
+SELECT CustomerID, COUNT(OrderID) AS OrderCount FROM Orders GROUP BY CustomerID HAVING COUNT(OrderID) > 3;
 
-4. What are the customers who have placed more than 3 orders?
+-- 5. What are the top 5 most expensive products? Round the price to 2 decimal places.
+SELECT ProductName, ROUND(CAST(Price AS NUMERIC), 2) AS Price FROM products ORDER BY Price DESC LIMIT 5; 
 
-5. What are the top 5 most expensive products? Round the price to 2 decimal places.
-
-6. What are the order details (ProductID, Quantity) for customers from France?
+-- 6. What are the order details (ProductID, Quantity) for customers from France?
 SELECT o.OrderID, c.CustomerName, c.Country, od.ProductID, od.Quantity FROM Orders o JOIN Customers c ON o.CustomerID = c.CustomerID JOIN OrderDetails od ON o.OrderID = od.OrderID WHERE c.Country = 'France';
 
-7. Area there products without a category assigned?
+-- 7. Area there products without a category assigned?
+SELECT ProductID, ProductName, CategoryID FROM Products WHERE CategoryID IS NULL;
 
-8. What are all orders and their employees?
+-- 8. What are all orders and their employees?
+SELECT o.OrderID, e.EmployeeID, e.FirstName, e.LastName FROM Orders o LEFT JOIN Employees e ON o.EmployeeID = e.EmployeeID;
 
 9. What is the average, minimum, and maximum price of products? Round the values to 2 decimal places.
 
