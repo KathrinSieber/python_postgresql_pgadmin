@@ -31,7 +31,8 @@ SELECT ProductID, ProductName, CategoryID FROM Products WHERE CategoryID IS NULL
 -- 8. What are all orders and their employees?
 SELECT o.OrderID, e.EmployeeID, e.FirstName, e.LastName FROM Orders o LEFT JOIN Employees e ON o.EmployeeID = e.EmployeeID;
 
-9. What is the average, minimum, and maximum price of products? Round the values to 2 decimal places.
+-- 9. What is the average, minimum, and maximum price of products? Round the values to 2 decimal places.
+SELECT ROUND(CAST(AVG(Price) AS NUMERIC), 2) AS AveragePrice, ROUND(CAST(MIN(Price) AS NUMERIC), 2) AS MinimumPrice, ROUND(CAST(MAX(Price) AS NUMERIC), 2) AS MaximumPrice FROM Products;
 
 10. What are the products with prices between 10 and 50? Round the price to 2 decimal places and sort the result by price in descending order.
 
