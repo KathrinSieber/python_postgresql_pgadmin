@@ -34,15 +34,20 @@ SELECT o.OrderID, e.EmployeeID, e.FirstName, e.LastName FROM Orders o LEFT JOIN 
 -- 9. What is the average, minimum, and maximum price of products? Round the values to 2 decimal places.
 SELECT ROUND(CAST(AVG(Price) AS NUMERIC), 2) AS AveragePrice, ROUND(CAST(MIN(Price) AS NUMERIC), 2) AS MinimumPrice, ROUND(CAST(MAX(Price) AS NUMERIC), 2) AS MaximumPrice FROM Products;
 
-10. What are the products with prices between 10 and 50? Round the price to 2 decimal places and sort the result by price in descending order.
+-- 10. What are the products with prices between 10 and 50? Round the price to 2 decimal places and sort the result by price in descending order
+SELECT ProductID, ProductName, ROUND(CAST(Price AS NUMERIC), 2) AS Price FROM Products WHERE Price BETWEEN 10 AND 50 ORDER BY Price DESC;
 
-11. What are the shippers and the total number of orders shipped by each shipper, including those with no orders?
+-- 11. What are the shippers and the total number of orders shipped by each shipper, including those with no orders?
+SELECT s.ShipperName, COUNT(o.OrderID) AS TotalOrders FROM Shippers s LEFT JOIN Orders o ON s.ShipperID = o.ShipperID GROUP BY s.ShipperName;
 
-12. What are the employees who have processed > 5 orders? Sort the result by the number of orders in descending order.
+-- 12. What are the employees who have processed > 5 orders? Sort the result by the number of orders in descending order.
+SELECT e.EmployeeID, e.FirstName, e.LastName, COUNT(o.OrderID) AS OrderCount FROM Employees e JOIN Orders o ON e.EmployeeID = o.EmployeeID GROUP BY e.EmployeeID, e.FirstName, e.LastName HAVING COUNT(o.OrderID) > 5 ORDER BY OrderCount DESC;
 
-13. What is the total revenue for each product within each order, including the product name and ordered by order ID and total revenue in descending order?
+-- 13. What is the total revenue for each product within each order, including the product name and ordered by order ID and total revenue in descending order?
+SELECT od.OrderID, p.ProductID, p.ProductName, ROUND(CAST(SUM(p.Price * od.Quantity) AS NUMERIC), 2) AS TotalRevenue FROM OrderDetails od JOIN Products p ON od.ProductID = p.ProductID GROUP BY od.OrderID, p.ProductID, p.ProductName ORDER BY od.OrderID, TotalRevenue DESC;
 
-14. What are the customers, employees, and the total number of orders placed by each customer?
+-- 14. What are the customers, employees, and the total number of orders placed by each customer?
+SELECT c.CustomerID, c.CustomerName, e.EmployeeID, e.FirstName, e.LastName, COUNT(o.OrderID) AS TotalOrders FROM Customers c JOIN Orders o ON c.CustomerID = o.CustomerID JOIN Employees e ON o.EmployeeID = e.EmployeeID GROUP BY c.CustomerID, c.CustomerName, e.EmployeeID, e.FirstName, e.LastName;
 
-15. What are the products with an average price higher than the overall average product price? 
-    Round the price to 2 decimal places and sort the result by price in descending order.
+-- 15. What are the products with an average price higher than the overall average product price? Round the price to 2 decimal places and sort the result by price in descending order.
+SELECT ProductID, ProductName, ROUND(CAST(Price AS NUMERIC), 2) AS Price FROM Products WHERE Price > (SELECT AVG(Price) FROM Products) ORDER BY Price DESC;
